@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace BackEndDataTech.Models
 {
-    [Table("tb_cliente")]
+        [Table("tb_cliente")]
+
     public class Cliente
     {
         [Key]
         public int id { get; set; }
         [Required]
         public string Nome { get; set; }
-        public int Idade { get; set; }
+        public string email { get; set; }
     }
 }
