@@ -11,8 +11,8 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace BackEndDataTech.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240517055522_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240517071806_AdicionarTabelaEmpresa")]
+    partial class AdicionarTabelaEmpresa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,13 @@ namespace BackEndDataTech.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("email")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("id");
 
-                    b.ToTable("Cliente");
+                    b.ToTable("tb_cliente");
                 });
 
             modelBuilder.Entity("BackEndDataTech.Models.Empresa", b =>
@@ -73,6 +74,9 @@ namespace BackEndDataTech.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
@@ -82,7 +86,20 @@ namespace BackEndDataTech.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("EmpresaId");
+
                     b.ToTable("tb_produto");
+                });
+
+            modelBuilder.Entity("BackEndDataTech.Models.Produto", b =>
+                {
+                    b.HasOne("BackEndDataTech.Models.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empresa");
                 });
 #pragma warning restore 612, 618
         }
